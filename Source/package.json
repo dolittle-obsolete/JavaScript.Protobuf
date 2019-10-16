@@ -10,14 +10,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/dolittle/JavaScript.Fundamentals.git"
+    "url": "git+https://github.com/dolittle-tools/JavaScript.Protobuf.git"
   },
   "author": "",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/dolittle/JavaScript.Fundamentals/issues"
+    "url": "https://github.com/dolittle-tools/JavaScript.Protobuf/issues"
   },
-  "homepage": "https://github.com/dolittle/JavaScript.Fundamentals#readme",
+  "homepage": "https://github.com/dolittle-tools/JavaScript.Protobuf#readme",
   "dependencies": {
     "@types/node": "12.0.0",
     "@types/google-protobuf": "^3.7.1",
