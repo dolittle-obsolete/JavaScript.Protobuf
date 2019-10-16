@@ -19,15 +19,14 @@
   },
   "homepage": "https://github.com/dolittle-tools/JavaScript.Protobuf#readme",
   "dependencies": {
-    "@types/node": "12.0.0",
     "@types/google-protobuf": "^3.7.1",
-    "typescript": "^3.4.5",
+    "@types/node": "12.0.0",
+    "del-cli": "^2.0.0",
+    "glob": "^7.1.4",
     "grpc": "^1.23.3",
     "grpc-tools": "^1.8.0",
     "ts-protoc-gen": "^0.11.0",
-    "del-cli": "^2.0.0",
-    "glob": "^7.1.4"
+    "typescript": "^3.4.5"
   },
-  "devDependencies": {
-  }
+  "devDependencies": {}
 }
