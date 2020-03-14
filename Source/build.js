@@ -11,8 +11,11 @@ const del = require('del');
 
 const { exec, execSync } = require('child_process');
 
-if (process.argv.length < 3) {
-    console.log('You have to provide one or more roots to paths to where .proto files are located')
+if (process.argv.length < 4) {
+    console.log('Usage:\n')
+    console.log('dolittle_proto_build grpc-node|grpc-web -I[include path] [source path(s)]')
+    console.log('\n');
+    console.log('You can have more than one include path, just add multiple `-I` options.');
     process.exit(0);
     return;
 }
@@ -20,20 +23,26 @@ if (process.argv.length < 3) {
 console.log('Delete existing declaration files');
 del('./*.d.ts', '**/*.d.ts', '!node_modules/**/*', 'lib');
 
-let args = '';
+let args = `--ts_out=service=${process.argv[2]}:./ `
 
 let patterns = ['*.proto', '**/*.proto'];
 let ignorePatterns = ['', '*.proto'];
 
-for (var i = 2; i < process.argv.length; i++) {
-    let folder = path.join(process.cwd(), process.argv[i]);
+for (var i = 3; i < process.argv.length; i++) {
+    let arg = process.argv[i];
+    if( arg.indexOf('-') == 0 ) {
+        args += `${arg} `;
+        continue;
+    }
+
+    let folder = path.join(process.cwd(), arg);
     patterns.forEach((pattern, patternIndex) => {
         let files = glob.sync(pattern, {
             cwd: folder,
             ignore: ignorePatterns[patternIndex]
         });
         if (files.length > 0) {
-            args += `${path.join(process.argv[i], pattern)} `;
+            args += `${path.join(arg, pattern)} `;
         }
     });
 }
@@ -44,6 +53,7 @@ process.env.nodemodules = nodeModulesRoot;
 
 let scriptPath = path.join(__dirname, `generate_proxies.sh`);
 scriptPath = `${scriptPath} ${args.trim()}`;
+console.log(`Generate ${scriptPath}`)
 const generate = exec(`${scriptPath}`,  (error, stdout, stderr) => {
     console.log(stdout);
     console.log(stderr);
