@@ -23,7 +23,15 @@ if (process.argv.length < 4) {
 console.log('Delete existing declaration files');
 del('./*.d.ts', '**/*.d.ts', '!node_modules/**/*', 'lib');
 
-let args = `--ts_out=service=${process.argv[2]}:./ `
+let args = '';
+if( process.argv[2] == 'grpc-web' ) {
+    args = '--grpc-web_out=import_style=commonjs,mode=grpcwebtext:. '
+    args += `--plugin=protoc-gen-grpc-web=${path.join(__dirname, './grpc-web/macOS/protoc-gen-grpc-web')} `;
+}
+
+args += `--ts_out=service=grpc-node:./ `
+
+
 
 let patterns = ['*.proto', '**/*.proto'];
 let ignorePatterns = ['', '*.proto'];
