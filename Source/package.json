@@ -1,6 +1,6 @@
 {
   "name": "@dolittle/protobuf.build",
-  "version": "1.0.14",
+  "version": "1.0.15",
   "description": "",
   "publishConfig": {
     "access": "public"
@@ -19,16 +19,15 @@
   },
   "homepage": "https://github.com/dolittle-tools/JavaScript.Protobuf#readme",
   "dependencies": {
-    "@types/node": "^13.9.1",
     "@types/google-protobuf": "^3.7.2",
-    "typescript": "^3.8.3",
-    "grpc": "^1.24.2",
-    "grpc-web": "^1.0.7",
-    "grpc-tools": "^1.8.1",
-    "ts-protoc-gen": "^0.12.0",
+    "@types/node": "^13.13.5",
     "del-cli": "^3.0.0",
-    "glob": "^7.1.6"
+    "glob": "^7.1.6",
+    "grpc": "^1.24.2",
+    "grpc-tools": "^1.8.1",
+    "grpc-web": "^1.0.7",
+    "ts-protoc-gen": "^0.12.0",
+    "typescript": "^3.8.3"
   },
-  "devDependencies": {
-  }
+  "devDependencies": {}
 }
