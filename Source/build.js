@@ -67,7 +67,7 @@ const generate = exec(`${scriptPath}`,  (error, stdout, stderr) => {
 
     if (error == null) {
         console.log('Transpile any TypeScript files');
-        execSync(`npx tsc -p tsconfig.json --declaration false`, { stdio: 'inherit' });
+        execSync(`npx tsc --declaration false`, { stdio: 'inherit' });
 
         if( process.argv[2] == 'grpc-web' ) {
             console.log('Rename for web')
