@@ -8,6 +8,7 @@ console.log(`Using tooling from ${nodeModulesRoot}`);
 const path = require('path');
 const glob = require('glob');
 const del = require('del');
+const fs = require('fs');
 
 const { exec, execSync } = require('child_process');
 
@@ -37,6 +38,29 @@ let hasSubFolder = subFolder !== '.';
 
 let patterns = ['*.proto', '**/*.proto'];
 let ignorePatterns = ['', '*.proto'];
+
+const getAllFiles = function (dirPath, containing, arrayOfFiles) {
+    files = fs.readdirSync(dirPath)
+
+    arrayOfFiles = arrayOfFiles || []
+
+    if (dirPath.indexOf('node_modules') < 0) {
+
+        files.forEach(function (file) {
+
+            if (fs.statSync(dirPath + "/" + file).isDirectory()) {
+                arrayOfFiles = getAllFiles(dirPath + "/" + file, containing, arrayOfFiles)
+            } else {
+                if (file.indexOf(containing) >= 0 || containing == '') {
+                    arrayOfFiles.push(path.join(dirPath, file));
+                }
+            }
+        });
+    }
+
+
+    return arrayOfFiles
+}
 
 for (var i = 3; i < process.argv.length; i++) {
     let arg = process.argv[i];
@@ -74,7 +98,11 @@ const generate = exec(`${scriptPath}`, (error, stdout, stderr) => {
 
         if (process.argv[2] == 'grpc-web') {
             console.log('Rename for web')
-            execSync('for f in **/*grpc_pb*.d.ts; do mv "$f" "${f/grpc_pb/grpc_web_pb}"; done');
+
+            console.log(process.cwd());
+
+            const allFiles = getAllFiles(process.cwd(), 'grpc_pb.d.ts');
+            allFiles.forEach(_ => fs.renameSync(_, _.replace('grpc_pb','grpc_web_pb')));
         }
 
         console.log('Copy declaration files to lib')
