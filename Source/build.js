@@ -11,12 +11,10 @@ const del = require('del');
 
 const { exec, execSync } = require('child_process');
 
-if (process.argv.length < 5) {
+if (process.argv.length < 4) {
     console.log('Usage:\n')
-    console.log('dolittle_proto_build grpc-node|grpc-web .|sub-folder  -I[include path] [source path(s)]')
+    console.log('dolittle_proto_build grpc-node|grpc-web -I[include path] [source path(s)]')
     console.log('\n');
-    console.log('The option of .|sub-folder indicates if there is a sub structure in which the generated files will be in.');
-    console.log('If it is, you want these to be moved. If not, the argument should be a single . (dot).');
     console.log('The ordering of the arguments is important.')
     console.log('You can have more than one include path, just add multiple `-I` options.');
     process.exit(0);
@@ -40,7 +38,7 @@ let hasSubFolder = subFolder !== '.';
 let patterns = ['*.proto', '**/*.proto'];
 let ignorePatterns = ['', '*.proto'];
 
-for (var i = 4; i < process.argv.length; i++) {
+for (var i = 3; i < process.argv.length; i++) {
     let arg = process.argv[i];
     if (arg.indexOf('-') == 0) {
         args += `${arg} `;
@@ -73,11 +71,6 @@ const generate = exec(`${scriptPath}`, (error, stdout, stderr) => {
     if (error == null) {
         console.log('Transpile any TypeScript files');
         execSync(`npx tsc --declaration false`, { stdio: 'inherit' });
-
-        if (hasSubFolder) {
-            execSync(`mv ${subFolder}/* .`);
-            execSync(`rm -rf ${subFolder}`);
-        }
 
         if (process.argv[2] == 'grpc-web') {
             console.log('Rename for web')
